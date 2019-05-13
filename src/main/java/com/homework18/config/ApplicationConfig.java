@@ -23,41 +23,41 @@ import java.util.Properties;
 public class ApplicationConfig {
 
     @Value("${driver}")
-    private String DRIVER;
+    private String driver;
 
     @Value("${url}")
-    private String URL;
+    private String url;
 
     @Value("${login}")
-    private String USER_NAME;
+    private String login;
 
     @Value("${password}")
-    private String PASSWORD;
+    private String password;
 
     @Value("${hibernate.dialect}")
-    private String HIBERNATE_DIALECT;
+    private String hibernateDialect;
 
     @Value("${hibernate.show_sql}")
-    private String SHOW_SQL;
+    private String showSql;
 
     @Value("${hibernate.hbm2ddl.auto}")
-    private String HBM2DDL;
+    private String hbm2dll;
 
     @Value("${hibernate.format_sql}")
-    private String FORMAT_SQL;
+    private String formatSql;
 
     @Bean
-    DriverManagerDataSource dataSource() {
+    public DriverManagerDataSource dataSource() {
         DriverManagerDataSource managerDataSource = new DriverManagerDataSource();
-        managerDataSource.setDriverClassName(DRIVER);
-        managerDataSource.setUrl(URL);
-        managerDataSource.setUsername(USER_NAME);
-        managerDataSource.setPassword(PASSWORD);
+        managerDataSource.setDriverClassName(driver);
+        managerDataSource.setUrl(url);
+        managerDataSource.setUsername(login);
+        managerDataSource.setPassword(password);
         return managerDataSource;
     }
 
     @Bean
-    LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean managerFactoryBean = new LocalContainerEntityManagerFactoryBean();
         managerFactoryBean.setDataSource(dataSource());
         managerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
@@ -66,24 +66,24 @@ public class ApplicationConfig {
         return managerFactoryBean;
     }
 
-    Properties jpaProperties() {
+    public Properties jpaProperties() {
         Properties jpaProperties = new Properties();
-        jpaProperties.setProperty("hibernate.dialect", HIBERNATE_DIALECT);
-        jpaProperties.setProperty("hibernate.show_sql", SHOW_SQL);
-        jpaProperties.setProperty("hibernate.format_sql", FORMAT_SQL);
-        jpaProperties.setProperty("hibernate.hbm2ddl.auto", HBM2DDL);
+        jpaProperties.setProperty("hibernate.dialect", hibernateDialect);
+        jpaProperties.setProperty("hibernate.show_sql", showSql);
+        jpaProperties.setProperty("hibernate.format_sql", formatSql);
+        jpaProperties.setProperty("hibernate.hbm2ddl.auto", hbm2dll);
         return jpaProperties;
     }
 
     @Bean
-    JpaTransactionManager transactionManager() {
+    public JpaTransactionManager transactionManager() {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
         return transactionManager;
     }
 
     @Bean
-    JavaMailSender javaMailSender(){
+    public JavaMailSender javaMailSender(){
         return new JavaMailSenderImpl();
     }
 }
